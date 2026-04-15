@@ -64,6 +64,7 @@ variable "hoop" {
   description = <<-EOD
   hoop:
     enabled: false # (Optional) Enable Hoop.dev connection output. Default: false.
+    community: true # (Optional) When true, use community/open-source agent format. Community does not support GCP Secret Manager as agent-side provider; hoop_connections will be null. Use enterprise for _envs/gcp/ support. Default: true.
     agent_id: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" # (Required if enabled) Hoop agent UUID. No default.
     tags: # (Optional) Tags for the Hoop connection. Default: {}.
       key: "value"
@@ -96,13 +97,4 @@ variable "kms_key_name" {
   EOD
   type        = string
   default     = null
-}
-
-variable "hoop_community" {
-  description = <<-EOD
-  hoop_community: true # (Optional) When true, use hoop community/open-source agent format. Community does not support GCP Secret Manager as an agent-side secret provider; hoop_connections output will be null. Use enterprise/managed version for _envs/gcp/ support, or configure agent env vars manually with _envjson. Default: true.
-  EOD
-  type        = bool
-  default     = true
-  nullable    = false
 }

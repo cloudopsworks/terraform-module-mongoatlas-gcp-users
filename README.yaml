@@ -133,6 +133,7 @@ usage: |-
         access_control: [] # (Optional) Per-user access control groups.
   hoop:
     enabled: false # (Optional) Enable Hoop.dev connection metadata output. Default: false.
+    community: true # (Optional) Community does not support GCP as agent-side provider; hoop_connections will be null. Use enterprise for _envs/gcp/ support. Default: true.
     agent_id: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" # (Required if enabled) Hoop agent UUID.
     tags: {} # (Optional) Tags for Hoop connections.
     access_control: [] # (Optional) Global access control groups.

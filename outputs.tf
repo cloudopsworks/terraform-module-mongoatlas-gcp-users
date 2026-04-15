@@ -18,7 +18,7 @@ output "users" {
 
 output "hoop_connections" {
   description = "Hoop connection definitions enriched with GCP Secret Manager secret references. Pass as the `connections` input to terraform-module-hoop-connection. Community mode returns null (no _gcp agent provider); enterprise mode uses _envs/gcp/<secret-id>."
-  value = module.mongoatlas_users.hoop_output != null && !var.hoop_community ? {
+  value = module.mongoatlas_users.hoop_output != null && !try(var.hoop.community, true) ? {
     for key, conn in module.mongoatlas_users.hoop_output.connections : key => merge(conn, {
       agent_id = module.mongoatlas_users.hoop_output.agent_id
       secrets = {
