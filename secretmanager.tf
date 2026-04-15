@@ -29,13 +29,13 @@ resource "google_secret_manager_secret" "atlas_cred" {
   )
 
   replication {
-    auto {}
-  }
-
-  dynamic "customer_managed_encryption" {
-    for_each = var.kms_key_name != null ? [1] : []
-    content {
-      kms_key_name = var.kms_key_name
+    auto {
+      dynamic "customer_managed_encryption" {
+        for_each = var.kms_key_name != null ? [1] : []
+        content {
+          kms_key_name = var.kms_key_name
+        }
+      }
     }
   }
 
