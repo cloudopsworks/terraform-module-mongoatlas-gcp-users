@@ -17,13 +17,20 @@ output "users" {
 }
 
 output "hoop_connections" {
-  description = "Hoop connection definitions enriched with GCP Secret Manager secret references. Pass as the `connections` input to terraform-module-hoop-connection. Uses hoop.dev _envs/gcp/<secret-name> syntax."
-  value = module.mongoatlas_users.hoop_output != null ? {
+  description = "Hoop connection definitions enriched with GCP Secret Manager secret references. Pass as the `connections` input to terraform-module-hoop-connection. Community mode returns null (no _gcp agent provider); enterprise mode uses _envs/gcp/<secret-id>."
+  value = module.mongoatlas_users.hoop_output != null && !var.hoop_community ? {
     for key, conn in module.mongoatlas_users.hoop_output.connections : key => merge(conn, {
       agent_id = module.mongoatlas_users.hoop_output.agent_id
       secrets = {
-        "envvar:CONNECTION_STRING" = "_envs/gcp/${google_secret_manager_secret.atlas_cred[key].secret_id}"
+        "envvar:CONNECTION_STRING" = "_envs/gcp/${google_secret_manager_secret.atlas_conn_string[key].secret_id}"
       }
     })
   } : null
+}
+
+output "connection_string_secret_ids" {
+  description = "Map of user keys to GCP Secret Manager secret IDs containing only the connection string. Use with hoop community edition by setting agent env vars and referencing via _envjson:ENV_VAR:<key>."
+  value = {
+    for k in keys(var.users) : k => google_secret_manager_secret.atlas_conn_string[k].id
+  }
 }

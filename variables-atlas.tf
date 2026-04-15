@@ -97,3 +97,12 @@ variable "kms_key_name" {
   type        = string
   default     = null
 }
+
+variable "hoop_community" {
+  description = <<-EOD
+  hoop_community: true # (Optional) When true, use hoop community/open-source agent format. Community does not support GCP Secret Manager as an agent-side secret provider; hoop_connections output will be null. Use enterprise/managed version for _envs/gcp/ support, or configure agent env vars manually with _envjson. Default: true.
+  EOD
+  type        = bool
+  default     = true
+  nullable    = false
+}
