@@ -6,3 +6,6 @@
 #       WebSite: https://cloudops.works
 #     Distributed Under Apache v2.0 License
 #
+
+data "google_project" "current" {}
+data "google_client_config" "current" {}
